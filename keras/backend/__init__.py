@@ -32,7 +32,7 @@ if os.path.exists(_config_path):
     _epsilon = _config.get('epsilon', epsilon())
     assert type(_epsilon) == float
     _backend = _config.get('backend', _BACKEND)
-    assert _backend in {'theano', 'tensorflow'}
+    assert _backend in {'theano', 'tensorflow', 'pylearn2'}
     _image_dim_ordering = _config.get('image_dim_ordering', image_dim_ordering())
     assert _image_dim_ordering in {'tf', 'th'}
 
@@ -51,7 +51,7 @@ with open(_config_path, 'w') as f:
 
 if 'KERAS_BACKEND' in os.environ:
     _backend = os.environ['KERAS_BACKEND']
-    assert _backend in {'theano', 'tensorflow'}
+    assert _backend in {'theano', 'tensorflow', 'pylearn2'}
     _BACKEND = _backend
 
 # import backend
@@ -61,6 +61,9 @@ if _BACKEND == 'theano':
 elif _BACKEND == 'tensorflow':
     sys.stderr.write('Using TensorFlow backend.\n')
     from .tensorflow_backend import *
+elif _BACKEND == 'pylearn2':
+    sys.stderr.write('Using pylearn2 backend.\n')
+    from .pylearn2_backend import *
 else:
     raise Exception('Unknown backend: ' + str(_BACKEND))
 
